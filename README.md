@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RAJVEER — Customer Ledger Dashboard
 
-## Getting Started
+**Rajveer** is a mobile-first, production-ready web application built for jeweller and goldsmith business owners to track custom work done for customers and payments received from them. It replaces traditional manual spreadsheets with a secure, multi-device dashboard and private customer portals.
 
-First, run the development server:
+---
 
+## 🌟 Key Features
+
+### For the Business Owner:
+- **Comprehensive Ledger Dashboard:** Real-time visibility into Revenue (cash received), Total Billed, Outstanding Pending balances, and Gold Weight totals (billed vs. received).
+- **Timeframe Filters:** Instant switching between *This Month*, *Last Month*, *This Year*, *All Time*, and *Custom Date Ranges*.
+- **Interactive Monthly Comparisons:** 6-month visual bar chart comparing work billed against cash collected.
+- **Customer Management:**
+  - Create customers with private usernames and optional phone numbers.
+  - Choose between **4-Digit PIN Access** or a **Direct Random Link** (`/c/<token>`).
+  - Auto-generate PINs, reset PINs, regenerate direct links, and toggle customer active status.
+  - Safe deletion requiring typing the customer's exact name to confirm.
+- **Dual Ledger Tracking (Work vs. Payments):**
+  - **Work Done (Bills):** Automatic sequential Bill Numbers (`#0001`), item description with autosuggestions, gold weight in grams, and rupee amount.
+  - **Payments Received (Receipts):** Cash received, gold weight received, date, and reference note.
+  - Supports advance balances (displayed in green).
+- **WhatsApp Share:** One-click WhatsApp link formatting (`wa.me`) with balances and personalized login links.
+- **Formatted Excel Exports:**
+  - Sheet 1: Consolidated summary table with grand totals.
+  - Individual sheets for every customer in the classic goldsmith ledger layout.
+  - Indian currency formatting (`₹`), gold formatting (`35.17 g`), frozen headers, and styled totals.
+- **Luxury PDF Statements:** Clean black and gold branded statements for individual customer accounts.
+- **Automated 6-Monthly Backup Reminder:**
+  - Sticky warning banner and daily first-login modal when backup is due (every 1, 3, or 6 months).
+  - One-click **Download Full Backup (ZIP)** containing `Rajveer_All_Data.xlsx` plus individual `.xlsx` workbooks for each client.
+  - Snooze reminder for 7 days if needed.
+
+### For Customers (Read-Only Portal):
+- **Private Access:** Customers view **only** their own ledger. Customer sessions are cryptographically enforced on the server.
+- **Zero Exposure:** Customers can never view, query, or edit any other customer's records.
+- **Complete Timeline:** View full bill-wise details, payment receipts, and chronological transaction history.
+- **PDF Download:** Customers can download their own official statement directly.
+- **Search & Filters:** Search for specific jewelry items or filter by date.
+- **SEO & Robot Protection:** Strict `noindex, nofollow` and `X-Robots-Tag` headers ensure customer data is never indexed by search engines.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework:** Next.js (App Router) + TypeScript
+- **Styling:** Tailwind CSS + Lucide Icons (light-only luxury gold shop aesthetic: yellow, white, and black)
+- **Database:** Supabase Postgres (accessed **strictly server-side** using the service role key)
+- **Security:**
+  - Row Level Security (RLS) on all tables with all public grants revoked (`anon` and `authenticated` have zero access).
+  - Signed HTTP-only, SameSite=Lax, Secure JWT cookies using `jose`.
+  - Database-backed rate limiting (5 attempts within 15 minutes triggers a 15-minute lockout).
+  - PIN and password hashing with `bcryptjs`.
+- **Exports & Backups:**
+  - Excel Workbooks: `exceljs`
+  - Backup ZIP Archives: `jszip`
+  - PDF Statements: `jspdf` + `jspdf-autotable`
+  - Data Visualizations: `recharts`
+- **Dates & Currency:** `date-fns` in `Asia/Kolkata` timezone with Indian digit grouping (`en-IN`).
+
+---
+
+## 🚀 Getting Started Locally
+
+### 1. Clone & Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env.local`:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Fill in your configuration:
+```env
+NEXT_PUBLIC_APP_NAME=Rajveer
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+SESSION_SECRET=a-secure-random-string-at-least-32-chars-long
+OWNER_USERNAME=gauravsoni
+OWNER_PASSWORD=your-secure-password
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Initialize Supabase Database
+1. Open your Supabase project dashboard.
+2. Go to **SQL Editor**.
+3. Open `supabase/schema.sql` in this repo and paste its contents into the SQL Editor.
+4. Click **Run**.
+   *(This creates all tables, triggers, sequences, indexes, the security-invoker `customer_balances` view, and enables deny-all RLS).*
 
-## Learn More
+### 4. Seed the Owner Account
+Run the owner seeding script:
+```bash
+npm run seed:owner
+```
+*(This hashes your `OWNER_PASSWORD` using bcrypt and registers the owner account in the database).*
 
-To learn more about Next.js, take a look at the following resources:
+### 5. Run the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ☁️ Deploying to Vercel
 
-## Deploy on Vercel
+1. Push your repository to GitHub / GitLab.
+2. Log into [Vercel](https://vercel.com) and click **Add New Project**.
+3. Select your repository.
+4. Under **Environment Variables**, add the variables from `.env.local`:
+   - `NEXT_PUBLIC_APP_NAME`
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `SESSION_SECRET`
+   - `OWNER_USERNAME`
+   - `OWNER_PASSWORD`
+   - `NEXT_PUBLIC_SITE_URL` (set to your Vercel production URL, e.g. `https://rajveer.vercel.app`)
+5. Click **Deploy**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💡 Weekly Manual-Backup Best Practice
+
+While Rajveer includes an automated **6-monthly backup reminder** with an in-app banner and daily login modal, we strongly recommend:
+> **Weekly Best Practice:**
+> Every Saturday or Sunday evening, navigate to `/export` and click **Download Full Backup Archive (ZIP)**.
+> Save the downloaded `Rajveer_Backup_<YYYY-MM-DD>.zip` file to your Google Drive, Dropbox, or an external hard drive. This guarantees you have an offline, audit-proof copy of all your clients' individual Excel sheets and transaction ledgers.

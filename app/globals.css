@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+@theme {
+  --color-gold: #F5B400;
+  --color-gold-hover: #D99A00;
+  --color-gold-soft: #FFF3C4;
+  --color-gold-light: #FFFBEB;
+  --color-gold-border: #EFE7C8;
+  --color-gold-dark: #0A0A0A;
+  --color-gold-muted: #6B6B6B;
+  --color-gold-success: #15803D;
+  --color-gold-danger: #B91C1C;
+  --font-inter: var(--font-inter), sans-serif;
+  --font-poppins: var(--font-poppins), sans-serif;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a0a0a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #0a0a0a;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-poppins), var(--font-inter), sans-serif;
+}
+
+/* Mobile & Touch Optimizations */
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a {
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+/* Ensure minimum touch target on mobile */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Inputs at least 16px font to prevent iOS safari auto-zoom */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FFFBEB;
+}
+::-webkit-scrollbar-thumb {
+  background: #EFE7C8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D99A00;
 }
