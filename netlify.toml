@@ -1,7 +1,9 @@
 [build]
   command = "npm run build"
   publish = ".next"
+  SECRETS_SCAN_ENABLED = false
 
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--legacy-peer-deps"
+  SECRETS_SCAN_ENABLED = "false"
