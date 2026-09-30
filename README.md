@@ -105,20 +105,26 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## ☁️ Deploying to Vercel
+## ☁️ Deploying to Netlify
 
-1. Push your repository to GitHub / GitLab.
-2. Log into [Vercel](https://vercel.com) and click **Add New Project**.
-3. Select your repository.
-4. Under **Environment Variables**, add the variables from `.env.local`:
-   - `NEXT_PUBLIC_APP_NAME`
-   - `SUPABASE_URL`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `SESSION_SECRET`
-   - `OWNER_USERNAME`
-   - `OWNER_PASSWORD`
-   - `NEXT_PUBLIC_SITE_URL` (set to your Vercel production URL, e.g. `https://rajveer.vercel.app`)
-5. Click **Deploy**.
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Govindsoni5413/rajveer)
+
+### Steps to Deploy:
+1. Click the **Deploy to Netlify** button above or log into [Netlify](https://app.netlify.com).
+2. Click **Add new site** > **Import an existing project** > **GitHub**.
+3. Choose the repository: **`Govindsoni5413/rajveer`**.
+4. In **Site configuration**:
+   - Change the site name to **`rajveer`** (will give `https://rajveer.netlify.app`).
+   - Build settings are automatically detected via `netlify.toml` (Build command: `npm run build`, Publish directory: `.next`, Plugin: `@netlify/plugin-nextjs`).
+5. Under **Environment variables**, add the following:
+   - `NEXT_PUBLIC_APP_NAME` = `Rajveer`
+   - `SUPABASE_URL` = `https://sealmjuokweiwoecwkfg.supabase.co`
+   - `SUPABASE_SERVICE_ROLE_KEY` = `<your_supabase_service_role_key>`
+   - `SESSION_SECRET` = `rajveer-super-secure-production-jwt-session-secret-2026-key`
+   - `OWNER_USERNAME` = `revntrix@gmail.com`
+   - `OWNER_PASSWORD` = `govind5413N`
+   - `NEXT_PUBLIC_SITE_URL` = `https://rajveer.netlify.app`
+6. Click **Deploy rajveer**.
 
 ---
 
